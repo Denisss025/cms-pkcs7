@@ -35,15 +35,16 @@ typedef struct TBSCertList {
 	Name_t	 issuer;
 	Time_t	 thisUpdate;
 	struct Time	*nextUpdate	/* OPTIONAL */;
+	struct Member {
+		CertificateSerialNumber_t	 userCertificate;
+		Time_t	 revocationDate;
+		struct Extensions	*crlEntryExtensions	/* OPTIONAL */;
+
+		/* Context for parsing across buffer boundaries */
+		asn_struct_ctx_t _asn_ctx;
+	};
 	struct revokedCertificates {
-		A_SEQUENCE_OF(struct Member {
-			CertificateSerialNumber_t	 userCertificate;
-			Time_t	 revocationDate;
-			struct Extensions	*crlEntryExtensions	/* OPTIONAL */;
-			
-			/* Context for parsing across buffer boundaries */
-			asn_struct_ctx_t _asn_ctx;
-		} ) list;
+		A_SEQUENCE_OF(struct Member) list;
 		
 		/* Context for parsing across buffer boundaries */
 		asn_struct_ctx_t _asn_ctx;
